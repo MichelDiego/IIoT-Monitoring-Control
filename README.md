@@ -4,11 +4,11 @@ Este repositório contém o código-fonte e o fluxo de integração de um sistem
 
 O projeto integra hardware embarcado na borda (Edge) com um middleware de processamento e tomada de decisão (Fog Computing), enviando dados para bancos de dados de séries temporais e relacionais.
 
-## 📸 Demonstração
+##  Demonstração
 
 [![Google Drive](https://img.shields.io/badge/-Repositório_em_Campo_(Google_Drive)-0D1117?style=for-the-badge&logo=googledrive&logoColor=34A853)](https://drive.google.com/drive/u/1/folders/1CbQxDUkJ3atlZN0r8CcHZN9Mul5aLsuT)
 
-## 📌 Arquitetura do Sistema
+##  Arquitetura do Sistema
 
 O ecossistema foi projetado com foco em resiliência, baixa latência e redundância de dados:
 
@@ -20,7 +20,7 @@ O ecossistema foi projetado com foco em resiliência, baixa latência e redundâ
   * **InfluxDB:** Banco de dados de séries temporais otimizado para os dados dos sensores (temperatura e nível).
 * **Interface (UI) e Alertas:** Dashboard interativo com componentes customizados em Vue.js via Node-RED e integração para alertas.
 
-## 🛠️ Tecnologias e Bibliotecas Utilizadas
+##  Tecnologias e Bibliotecas Utilizadas
 
 **Embarcados:**
 * C++ (Arduino Core)
@@ -34,7 +34,7 @@ O ecossistema foi projetado com foco em resiliência, baixa latência e redundâ
 * Broker MQTT (Mosquitto/Local)
 * Bancos de Dados: MySQL e InfluxDB (v2.0)
 
-## 🚀 Principais Funcionalidades
+##  Principais Funcionalidades
 
 1. **Monitoramento em Tempo Real:** Leitura constante de volume de líquido (sensor ultrassônico calibrado) e temperatura, convertendo dados brutos em porcentagem e graus Celsius.
 2. **Telemetria do Sistema:** O ESP32 publica sua própria saúde operacional a cada minuto (Uptime, RAM Livre, Temperatura do Chip, Força do Sinal Wi-Fi - RSSI).
@@ -55,11 +55,7 @@ O sistema utiliza tópicos bem definidos para separar a publicação de dados da
   * `esp32/sub/controletemp`: Recebe comandos automáticos ou manuais da dashboard.
   * `esp32/sub/controleemergencia`: Recebe sinais para sobrepor as lógicas padrões de funcionamento.
 
-## 📸 Demonstração
-
-[![Google Drive](https://img.shields.io/badge/-Repositório_em_Campo_(Google_Drive)-0D1117?style=for-the-badge&logo=googledrive&logoColor=34A853)](https://drive.google.com/drive/u/1/folders/1CbQxDUkJ3atlZN0r8CcHZN9Mul5aLsuT)
-
-## ⚠️ Instruções para Uso
+##  Instruções para Uso
 
 Para replicar este projeto localmente, certifique-se de configurar as credenciais no arquivo `config.h`. 
 
