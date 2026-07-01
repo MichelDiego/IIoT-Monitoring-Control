@@ -53,7 +53,7 @@ O sistema utiliza tópicos bem definidos para separar a publicação de dados da
 
 ## 📸 Demonstração
 
-*(Nota: Adicione aqui as fotos do seu dashboard e do hardware montado)*
+[![Google Drive](https://img.shields.io/badge/-Repositório_em_Campo_(Google_Drive)-0D1117?style=for-the-badge&logo=googledrive&logoColor=34A853)](https://drive.google.com/drive/u/1/folders/1CbQxDUkJ3atlZN0r8CcHZN9Mul5aLsuT)
 
 ## ⚠️ Instruções para Uso
 
