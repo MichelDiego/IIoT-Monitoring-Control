@@ -4,6 +4,10 @@ Este repositório contém o código-fonte e o fluxo de integração de um sistem
 
 O projeto integra hardware embarcado na borda (Edge) com um middleware de processamento e tomada de decisão (Fog Computing), enviando dados para bancos de dados de séries temporais e relacionais.
 
+## 📸 Demonstração
+
+[![Google Drive](https://img.shields.io/badge/-Repositório_em_Campo_(Google_Drive)-0D1117?style=for-the-badge&logo=googledrive&logoColor=34A853)](https://drive.google.com/drive/u/1/folders/1CbQxDUkJ3atlZN0r8CcHZN9Mul5aLsuT)
+
 ## 📌 Arquitetura do Sistema
 
 O ecossistema foi projetado com foco em resiliência, baixa latência e redundância de dados:
