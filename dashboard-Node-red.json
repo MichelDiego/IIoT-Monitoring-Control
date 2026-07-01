@@ -1,0 +1,1581 @@
+[
+    {
+        "id": "963e49680fc0de58",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/temperatura",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 100,
+        "wires": [
+            [
+                "0ea541f679f78001",
+                "74686278b2140036"
+            ]
+        ]
+    },
+    {
+        "id": "f4e3ef8f2adf158d",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/liquido",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 100,
+        "y": 280,
+        "wires": [
+            [
+                "b5d62c1498599f96",
+                "6b249c0b44ce57a2",
+                "310f48da83b4290b",
+                "8e789dd707b5e26a"
+            ]
+        ]
+    },
+    {
+        "id": "784c75c67716ddb4",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "ConversãoLiqu",
+        "func": "// Definindo o volume máximo da solução (capacidade máxima do cilindro)\nlet volumeMaximo = 1800;\n\n// Capturando o valor (volume de líquido) do payload\nlet volumeLiq = msg.payload.value;\n\n// Aplicando a fórmula para calcular o percentual (v/v)\nlet percentual = (volumeLiq / volumeMaximo) * 100;\n\n// Limitando o percentual a 100% no máximo\nif (percentual > 100) {\n    percentual = 100;\n}\n\n// Arredondando o valor para um número inteiro\npercentual = Math.round(percentual);\n\n// Retornando o percentual calculado e limitado\nmsg.payload = percentual;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 280,
+        "wires": [
+            [
+                "24abd41fe3cdcb17"
+            ]
+        ]
+    },
+    {
+        "id": "203072c2cf8115bc",
+        "type": "ui-chart",
+        "z": "c4888c3abb0f3966",
+        "group": "0f6f3fb31dfd6dba",
+        "name": "ChartTemp",
+        "label": "Temperatura",
+        "order": 1,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "HH:mm",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "0",
+        "ymax": "100",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": "1",
+        "showLegend": false,
+        "removeOlder": "15",
+        "removeOlderUnit": "1",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": "5",
+        "className": "",
+        "x": 570,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e6a37eaa690f8b4d",
+        "type": "ui-chart",
+        "z": "c4888c3abb0f3966",
+        "group": "0f6f3fb31dfd6dba",
+        "name": "ChartLiquido",
+        "label": "Liquido",
+        "order": 2,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "HH:mm",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "0",
+        "ymax": "100",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": "1",
+        "showLegend": false,
+        "removeOlder": "15",
+        "removeOlderUnit": "1",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": "5",
+        "className": "",
+        "x": 430,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "422810dbaaf1a988",
+        "type": "ui-gauge",
+        "z": "c4888c3abb0f3966",
+        "name": "GaugeTemp",
+        "group": "e4b9d56318351c17",
+        "order": 1,
+        "width": "3",
+        "height": "5",
+        "gtype": "gauge-34",
+        "gstyle": "needle",
+        "title": "Temperatura",
+        "units": "C°",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#5cd65c"
+            },
+            {
+                "from": "26",
+                "color": "#ffff00"
+            },
+            {
+                "from": "40",
+                "color": "#ea5353"
+            }
+        ],
+        "min": 0,
+        "max": "100",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 650,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "24abd41fe3cdcb17",
+        "type": "ui-gauge",
+        "z": "c4888c3abb0f3966",
+        "name": "GaugelLiquid",
+        "group": "e4b9d56318351c17",
+        "order": 2,
+        "width": "3",
+        "height": "5",
+        "gtype": "gauge-34",
+        "gstyle": "needle",
+        "title": "Liquido",
+        "units": "%",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#ea5353"
+            },
+            {
+                "from": "15",
+                "color": "#ffff00"
+            },
+            {
+                "from": "35",
+                "color": "#5cd65c"
+            }
+        ],
+        "min": 0,
+        "max": "100",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 610,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "0ea541f679f78001",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "MysqlTEMP",
+        "func": "// Extrai os valores do payload\nvar value = msg.payload.temperature;\nvar timestamp = msg.payload.timestamp;\nvar sensor = \"TEMPERATURA\";\nvar location = \"ESP32\";\n\n// Cria um novo payload para a mensagem\nmsg.payload = {};\nmsg.payload.value = value;\nmsg.payload.timestamp = timestamp;\nmsg.payload.location = location;\nmsg.payload.sensor = sensor;\n\n// Define o tópico para a consulta SQL\nmsg.topic = \"INSERT INTO TempData (id, sensor, local, value, timestamp) VALUES (NULL, '\" + sensor + \"', '\" + location + \"', \" + value + \", '\" + timestamp + \"')\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "c0439fe28bfbb955",
+                "22fca324842165c0"
+            ]
+        ]
+    },
+    {
+        "id": "c0439fe28bfbb955",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "GaugeTemp",
+        "func": "// Extrai o valor da temperatura do payload\nvar value = msg.payload.value;\n\n// Arredonda o valor para uma casa decimal\nvalue = Math.round(value * 10) / 10;\n\n// Define o payload como o valor arredondado com a unidade °C\nmsg.payload = `${value} `; // Adiciona a unidade de medida\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 100,
+        "wires": [
+            [
+                "422810dbaaf1a988"
+            ]
+        ]
+    },
+    {
+        "id": "b5d62c1498599f96",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "MysqlLiquid",
+        "func": "// Extrai os valores do payload\nvar liquidLevel = msg.payload.liquidLevel;\nvar timestamp = msg.payload.timestamp; // O timestamp deve estar no formato adequado\nvar sensor = \"LIQUIDO\"; // Atualizado para refletir o sensor de líquido\nvar location = \"ESP32\";\n\n// Cria um novo payload para a mensagem\nmsg.payload = {};\nmsg.payload.value = liquidLevel; // Valor do nível de líquido\nmsg.payload.timestamp = timestamp; // Timestamp\nmsg.payload.location = location; // Localização\nmsg.payload.sensor = sensor; // Sensor\n\n// Define o tópico para a consulta SQL\nmsg.topic = \"INSERT INTO LiqData (id, sensor, local, value, timestamp) VALUES (NULL, '\" + sensor + \"', '\" + location + \"', \" + liquidLevel + \", '\" + timestamp + \"')\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 280,
+        "wires": [
+            [
+                "784c75c67716ddb4",
+                "22fca324842165c0"
+            ]
+        ]
+    },
+    {
+        "id": "6b249c0b44ce57a2",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "LiquidChart",
+        "func": "// Extrai o valor do nível de líquido do payload\nvar liquidLevel = msg.payload.liquidLevel;\n\n// Converte o valor em porcentagem\nvar percentage = (liquidLevel / 2200) * 100;\n\n// Arredonda o valor para uma casa decimal\npercentage = Math.round(percentage * 10) / 10;\n\n// Define o payload apenas com o valor em porcentagem\nmsg.payload = percentage; // Apenas o número, sem objeto\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 320,
+        "wires": [
+            [
+                "e6a37eaa690f8b4d"
+            ]
+        ]
+    },
+    {
+        "id": "74686278b2140036",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "TempChart",
+        "func": "// Extrai o valor da temperatura do payload\nvar temperature = msg.payload.temperature;\n\n// Arredonda o valor para uma casa decimal\ntemperature = Math.round(temperature * 10) / 10;\n\n// Define o payload apenas com o valor arredondado\nmsg.payload = temperature; // Apenas o número, sem objeto\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 140,
+        "wires": [
+            [
+                "27b5045639e94ce8",
+                "203072c2cf8115bc"
+            ]
+        ]
+    },
+    {
+        "id": "c7eda91fd4bf9579",
+        "type": "ui-led",
+        "z": "c4888c3abb0f3966",
+        "name": "TEMPVERD",
+        "group": "8fe4aea5f346c87d",
+        "order": 1,
+        "width": "1",
+        "height": "2",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "states": [
+            {
+                "value": "true",
+                "valueType": "bool",
+                "color": "#00ff00"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showBorder": true,
+        "showGlow": true,
+        "x": 570,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "46c4c16d7adf247d",
+        "type": "ui-led",
+        "z": "c4888c3abb0f3966",
+        "name": "TEMPVERM",
+        "group": "8fe4aea5f346c87d",
+        "order": 2,
+        "width": "1",
+        "height": "2",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "states": [
+            {
+                "value": "false",
+                "valueType": "bool",
+                "color": "#ff0000"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showBorder": true,
+        "showGlow": true,
+        "x": 570,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "fc20473237835b77",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/bombaestado",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1070,
+        "y": 480,
+        "wires": [
+            [
+                "2bef8b227a215039"
+            ]
+        ]
+    },
+    {
+        "id": "cab3774e2124ce33",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/systeminfo",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 500,
+        "wires": [
+            [
+                "4636131f213332fc",
+                "8e789dd707b5e26a"
+            ]
+        ]
+    },
+    {
+        "id": "e634b7fb66848ea8",
+        "type": "mqtt out",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/sub/controletemp",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "570c796b2cf45015",
+        "x": 1370,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "1819102d8735137f",
+        "type": "ui-template",
+        "z": "c4888c3abb0f3966",
+        "group": "8fe4aea5f346c87d",
+        "page": "",
+        "ui": "",
+        "name": "Button",
+        "order": 7,
+        "width": "2",
+        "height": "3",
+        "head": "",
+        "format": "<template>\n    <v-btn class=\"button\" ref=\"button\" stacked @click=\"alternar\">\n        <div class=\"title\"></div>\n        <v-icon class=\"icon\" ref=\"icon\">{{ icon }}</v-icon>\n    </v-btn>\n</template>\n\n<script>\n    export default {\n        data() {\n            return {\n                value: \"OFF\",  // O estado inicial do botão\n                icon: \"radiobox-marked\"  // Ícone inicial\n            };\n        },\n        methods: {\n            alternar: function () {\n                if (this.value === 'ON') {\n                    this.desligar();\n                } else if (this.value === 'OFF') {\n                    this.ligar();\n                }\n            },\n            ligar: function () {\n                this.icon = \"mdi-radiobox-marked\";  // Ícone quando ligado\n                this.$refs.icon.$el.style.color = '#BD9608';  // Estilo do ícone\n                this.$refs.icon.$el.style.textShadow = '0px 0px 10px #BD9608';\n                if (this.value === 'OFF') {\n                    this.send({ payload: { action: 'ligar' } });  // Envia ação 'ligar'\n                    this.value = \"ON\"; \n                }\n            },\n            desligar: function () {\n                this.icon = \"mdi-radiobox-indeterminate-variant\";  // Ícone quando desligado\n                this.$refs.icon.$el.style.color = '#A9A9A9';  // Estilo do ícone\n                this.$refs.icon.$el.style.textShadow = '0px 0px 0px';\n                if (this.value === 'ON') {\n                    this.send({ payload: { action: 'desligar' } });  // Envia ação 'desligar'\n                    this.value = \"OFF\"; \n                }\n            }\n        },\n        watch: {\n            msg: function(){\n                if (this.msg.payload !== undefined) {\n                    console.log('got message :', this.msg);\n                    if (this.msg.payload.action === \"ligar\") {\n                        this.ligar();\n                    } else if (this.msg.payload.action === \"desligar\") {\n                        this.desligar();                        \n                    }\n                }\n            }\n        }\n    }\n</script>\n\n<style>\n    .button {\n        display: flex;\n        flex-direction: column;\n        margin: auto;\n        height: 100%;\n        width: 100%;\n        background-color: #4F4F4F;\n        color: #000000;\n        border: 1px solid #000000;\n        font-size: 14px;\n        border-radius: 18px;\n    }\n\n    .title {\n        font-size: 14px;\n    }\n\n    .icon {\n        font-size: 40px;\n    }\n</style>\n",
+        "storeOutMessages": true,
+        "passthru": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1190,
+        "y": 580,
+        "wires": [
+            [
+                "e634b7fb66848ea8"
+            ]
+        ]
+    },
+    {
+        "id": "91c5eea16a3addbc",
+        "type": "inject",
+        "z": "c4888c3abb0f3966",
+        "name": "Desligar",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{ \"action\": \"desligar\" }",
+        "payloadType": "str",
+        "x": 1060,
+        "y": 560,
+        "wires": [
+            [
+                "1819102d8735137f"
+            ]
+        ]
+    },
+    {
+        "id": "cef68a90796fc4fd",
+        "type": "inject",
+        "z": "c4888c3abb0f3966",
+        "name": "ligar",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{ \"action\": \"ligar\" }",
+        "payloadType": "str",
+        "x": 1050,
+        "y": 600,
+        "wires": [
+            [
+                "1819102d8735137f"
+            ]
+        ]
+    },
+    {
+        "id": "27b5045639e94ce8",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "LEDSTEMP",
+        "func": "// A temperatura é recebida diretamente em msg.payload\nlet temperature = msg.payload; // Assumindo que a temperatura está em msg.payload\n\n// Verifica a temperatura e define o estado do LED\nif (temperature < 40) {\n    msg.payload = true;  // Envia true se a temperatura for abaixo de 40\n} else {\n    msg.payload = false; // Envia false se a temperatura for igual ou acima de 40\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 200,
+        "wires": [
+            [
+                "c7eda91fd4bf9579",
+                "46c4c16d7adf247d"
+            ]
+        ]
+    },
+    {
+        "id": "2d865912902cf2d7",
+        "type": "ui-led",
+        "z": "c4888c3abb0f3966",
+        "name": "LIQUIDVERD",
+        "group": "8fe4aea5f346c87d",
+        "order": 3,
+        "width": "1",
+        "height": "2",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "states": [
+            {
+                "value": "true",
+                "valueType": "bool",
+                "color": "#00ff00"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showBorder": true,
+        "showGlow": true,
+        "x": 500,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "29833c348d62dde3",
+        "type": "ui-led",
+        "z": "c4888c3abb0f3966",
+        "name": "LIQUIDVERM",
+        "group": "8fe4aea5f346c87d",
+        "order": 4,
+        "width": "1",
+        "height": "2",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "states": [
+            {
+                "value": "false",
+                "valueType": "bool",
+                "color": "#ff0000"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showBorder": true,
+        "showGlow": true,
+        "x": 500,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "310f48da83b4290b",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "LEDSLIQUIDO",
+        "func": "// A estrutura do objeto é recebida em msg.payload\nlet liquidLevel = msg.payload.liquidLevel; // Acessa o nível de líquido dentro do objeto\n\n// Verifica o nível de líquido e define o estado do LED\nif (liquidLevel > 500) {\n    msg.payload = true;  // Envia true se o nível de líquido for acima de 500\n} else {\n    msg.payload = false; // Envia false se o nível de líquido for 500 ou abaixo\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 360,
+        "wires": [
+            [
+                "2d865912902cf2d7",
+                "29833c348d62dde3"
+            ]
+        ]
+    },
+    {
+        "id": "b8a2fcbc5de37b5a",
+        "type": "ui-led",
+        "z": "c4888c3abb0f3966",
+        "name": "BOMBAVERD",
+        "group": "8fe4aea5f346c87d",
+        "order": 5,
+        "width": "1",
+        "height": "2",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "states": [
+            {
+                "value": "true",
+                "valueType": "bool",
+                "color": "#00ff00"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showBorder": true,
+        "showGlow": true,
+        "x": 1520,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "1e19c92dfcbaf57a",
+        "type": "ui-led",
+        "z": "c4888c3abb0f3966",
+        "name": "BOMBAVERM",
+        "group": "8fe4aea5f346c87d",
+        "order": 6,
+        "width": "1",
+        "height": "2",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "states": [
+            {
+                "value": "false",
+                "valueType": "bool",
+                "color": "#ff0000"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showBorder": true,
+        "showGlow": true,
+        "x": 1520,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "2bef8b227a215039",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "FuncLEDSBOMBA",
+        "func": "// A estrutura do objeto é recebida em msg.payload\nlet bombaEstado = msg.payload.estado; // Acessa o estado da bomba dentro do objeto\n\n// Verifica o estado da bomba e define o valor para msg.payload\nif (bombaEstado === \"Ligada\") {\n    msg.payload = true;  // Envia true se a bomba estiver ligada\n} else if (bombaEstado === \"Desligada\") {\n    msg.payload = false; // Envia false se a bomba estiver desligada\n}\n\n// Retorna a mensagem modificada\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1290,
+        "y": 480,
+        "wires": [
+            [
+                "b8a2fcbc5de37b5a",
+                "1e19c92dfcbaf57a"
+            ]
+        ]
+    },
+    {
+        "id": "122839996e068f0d",
+        "type": "ui-text",
+        "z": "c4888c3abb0f3966",
+        "group": "422ff5886a9c486c",
+        "order": 1,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "Uptime",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 700,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "5dcc1365fe8c7179",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "UptimeFUNC",
+        "func": "// Supondo que msg.payload.uptime contenha o tempo de atividade no formato \"hh:mm:ss\"\nlet uptimeString = msg.payload.uptime; // Pega o valor de uptime como string\n\n// Verifica se o formato está correto\nlet uptimeParts = uptimeString.split(':');\n\nif (uptimeParts.length !== 3) {\n    msg.payload = \"Uptime inválido\"; // Mensagem de erro\n    return msg;\n}\n\n// Converte horas, minutos e segundos para números\nlet hours = parseInt(uptimeParts[0]);\nlet minutes = parseInt(uptimeParts[1]);\nlet seconds = parseInt(uptimeParts[2]);\n\n// Verifica se as partes são números válidos\nif (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {\n    msg.payload = \"Uptime inválido\"; // Mensagem de erro\n    return msg;\n}\n\n// Formata novamente se necessário\nmsg.payload = \n    String(hours).padStart(2, '0') + \":\" + \n    String(minutes).padStart(2, '0') + \":\" + \n    String(seconds).padStart(2, '0');\n\n// Retorna o objeto msg\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 520,
+        "wires": [
+            [
+                "122839996e068f0d"
+            ]
+        ]
+    },
+    {
+        "id": "a7c20f65bce3e728",
+        "type": "ui-text",
+        "z": "c4888c3abb0f3966",
+        "group": "422ff5886a9c486c",
+        "order": 6,
+        "width": "2",
+        "height": "1",
+        "name": "Memória Livre",
+        "label": "Memória Livre",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 740,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "ba4b8f568b359947",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "heap_freeFUNC",
+        "func": "// Verifica se msg.payload existe e contém freeHeap (heapSize)\nif (msg.payload && msg.payload.freeHeap !== undefined) {\n    // Converte o valor de freeHeap (heapSize) para KB e garante que tenha sempre duas casas decimais\n    let heapSizeKB = (msg.payload.freeHeap / 1024).toFixed(2); \n    // Retorna o valor de heapSize em KB com a unidade\n    return { payload: heapSizeKB + \" KB\" };\n} else {\n    // Retorna um erro caso freeHeap (heapSize) não esteja presente\n    return { payload: \"heapSize não encontrado\" };\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 560,
+        "wires": [
+            [
+                "a7c20f65bce3e728"
+            ]
+        ]
+    },
+    {
+        "id": "63de390c8ef2b7bf",
+        "type": "ui-text",
+        "z": "c4888c3abb0f3966",
+        "group": "422ff5886a9c486c",
+        "order": 2,
+        "width": "2",
+        "height": "1",
+        "name": "Temperatura do Chip",
+        "label": "Temperatura do Chip",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 760,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "f157e379169cc3b0",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "chipTemperature",
+        "func": "// Supondo que msg.payload.internalTemp contenha a temperatura interna em graus Celsius\nlet internalTempValue = msg.payload.internalTemp; // Pega o valor de temperatura interna\n\n// Formata o valor para 2 casas decimais e adiciona a unidade \"°C\"\nlet formattedTemp = internalTempValue.toFixed(2) + \" °C\";\n\n// Define a string formatada no payload da mensagem\nmsg.payload = formattedTemp;\n\n// Retorna o objeto msg\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 600,
+        "wires": [
+            [
+                "63de390c8ef2b7bf"
+            ]
+        ]
+    },
+    {
+        "id": "7f3c2e2c35aabb9b",
+        "type": "ui-text",
+        "z": "c4888c3abb0f3966",
+        "group": "422ff5886a9c486c",
+        "order": 3,
+        "width": "2",
+        "height": "1",
+        "name": "Uso da CPU",
+        "label": "Uso da CPU",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 750,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "a35e25951f84eb23",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "Uso da CPUFUNC",
+        "func": "// Verifica se msg.payload existe e contém cpuUsagePercentage\nif (msg.payload && msg.payload.cpuUsagePercentage !== undefined) {\n    // Retorna o valor de cpuUsagePercentage seguido do símbolo de porcentagem\n    return { payload: msg.payload.cpuUsagePercentage + \"%\" };\n} else {\n    // Retorna um erro caso cpuUsagePercentage não esteja presente\n    return { payload: \"cpuUsagePercentage não encontrado\" };\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 640,
+        "wires": [
+            [
+                "7f3c2e2c35aabb9b"
+            ]
+        ]
+    },
+    {
+        "id": "242e70aed393e88d",
+        "type": "ui-text",
+        "z": "c4888c3abb0f3966",
+        "group": "422ff5886a9c486c",
+        "order": 4,
+        "width": "2",
+        "height": "1",
+        "name": "Memória Flash",
+        "label": "Rssi",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 760,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "d08f20666a78ca68",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "flash_sizeFUNC",
+        "func": "// Verifica se msg.payload existe e contém rssi\nif (msg.payload && msg.payload.rssi !== undefined) {\n    // Retorna o valor de rssi com a unidade dBm\n    return { payload: msg.payload.rssi + \" dBm\" };\n} else {\n    // Retorna um erro caso rssi não esteja presente\n    return { payload: \"rssi não encontrado\" };\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 680,
+        "wires": [
+            [
+                "242e70aed393e88d"
+            ]
+        ]
+    },
+    {
+        "id": "98d71b7c5bbc6fb1",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/temperatura",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 880,
+        "y": 100,
+        "wires": [
+            [
+                "7340d4231a982b08"
+            ]
+        ]
+    },
+    {
+        "id": "467d7019f59771de",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/liquido",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 860,
+        "y": 140,
+        "wires": [
+            [
+                "9957825d08b92a3e",
+                "2561524ca7d29282"
+            ]
+        ]
+    },
+    {
+        "id": "1df0f9c73900ac1d",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/systeminfo",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 880,
+        "y": 180,
+        "wires": [
+            [
+                "4697298c18203060"
+            ]
+        ]
+    },
+    {
+        "id": "b73e5f015523193e",
+        "type": "influxdb out",
+        "z": "c4888c3abb0f3966",
+        "influxdb": "51989b25f8b9fcec",
+        "name": "",
+        "measurement": "Temperatura",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "servertcc",
+        "bucket": "MICHELDIEGOTCC",
+        "x": 1340,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "af71185ef4957e6b",
+        "type": "influxdb out",
+        "z": "c4888c3abb0f3966",
+        "influxdb": "51989b25f8b9fcec",
+        "name": "",
+        "measurement": "SYSTEMDATA2",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "servertcc",
+        "bucket": "MICHELDIEGOTCC",
+        "x": 1410,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "8c75276ad9fb35f0",
+        "type": "influxdb out",
+        "z": "c4888c3abb0f3966",
+        "influxdb": "51989b25f8b9fcec",
+        "name": "",
+        "measurement": "Liquido%",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "servertcc",
+        "bucket": "MICHELDIEGOTCC",
+        "x": 1330,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "9957825d08b92a3e",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "FUNCTIONLIQUID",
+        "func": "// Extrai o valor do nível de líquido do payload\nvar liquidLevel = msg.payload.liquidLevel;\n\n// Verifica se o valor está definido\nif (liquidLevel !== undefined && liquidLevel !== null) {\n    // Converte o valor em porcentagem com base no máximo de 2200\n    var percentage = (liquidLevel / 2200) * 100;\n\n    // Arredonda o valor para uma casa decimal\n    percentage = Math.round(percentage * 10) / 10;\n\n    // Atualiza o payload apenas com a porcentagem calculada\n    msg.payload = percentage; // Enviar apenas o número da porcentagem\n}\n\nreturn msg;\n// Extrai o valor do nível de líquido do payload\nvar liquidLevel = msg.payload.liquidLevel;\n\n// Verifica se o valor está definido\nif (liquidLevel !== undefined && liquidLevel !== null) {\n    // Converte o valor em porcentagem com base no máximo de 2200\n    var percentage = (liquidLevel / 2200) * 100;\n\n    // Arredonda o valor para uma casa decimal\n    percentage = Math.round(percentage * 10) / 10;\n\n    // Atualiza o payload apenas com a porcentagem calculada\n    msg.payload = percentage; // Enviar apenas o número da porcentagem\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 140,
+        "wires": [
+            [
+                "8c75276ad9fb35f0"
+            ]
+        ]
+    },
+    {
+        "id": "7340d4231a982b08",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "FUNCTIONTEMP",
+        "func": "// Extrai o valor da temperatura do payload\nvar temperature = msg.payload.temperature;\n\n// Arredonda o valor para uma casa decimal\ntemperature = Math.round(temperature * 10) / 10;\n\n// Define o payload apenas com o valor arredondado\nmsg.payload = temperature; // Apenas o número, sem objeto\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 100,
+        "wires": [
+            [
+                "b73e5f015523193e"
+            ]
+        ]
+    },
+    {
+        "id": "64cf1ca8dfbad93b",
+        "type": "mqtt out",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/sub/controletemp",
+        "qos": "1",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "570c796b2cf45015",
+        "x": 1710,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8757e2386506cdd8",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/temperatura",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1060,
+        "y": 360,
+        "wires": [
+            [
+                "dae314c9cc0e4a60"
+            ]
+        ]
+    },
+    {
+        "id": "dae314c9cc0e4a60",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "Temperatura",
+        "func": "// Extrai o valor da temperatura do payload\nvar temperature = parseInt(msg.payload.temperature, 10);\n\n// Define o payload apenas com o valor da temperatura\nmsg.payload = temperature;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1250,
+        "y": 360,
+        "wires": [
+            [
+                "8a5ebacaab916c16"
+            ]
+        ]
+    },
+    {
+        "id": "fe65b5bb38421f99",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "Liquido",
+        "func": "// Extrai o valor do nível de líquido do payload\nvar liquidLevel = parseInt(msg.payload.liquidLevel, 10);\n\n// Define o payload apenas com o valor do nível de líquido\nmsg.payload = liquidLevel;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1220,
+        "y": 400,
+        "wires": [
+            [
+                "8a5ebacaab916c16"
+            ]
+        ]
+    },
+    {
+        "id": "43a6d9d525efec2a",
+        "type": "mqtt in",
+        "z": "c4888c3abb0f3966",
+        "name": "",
+        "topic": "esp32/pub/liquido",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "570c796b2cf45015",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1040,
+        "y": 400,
+        "wires": [
+            [
+                "fe65b5bb38421f99"
+            ]
+        ]
+    },
+    {
+        "id": "8a5ebacaab916c16",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "EMERGENCIA",
+        "func": "const temperatureThreshold = 40; // Limite de temperatura (40°C)\nconst liquidLevelThreshold = 100; // Limite de nível de líquido (100 ml)\nconst actionTopicTemp = \"esp32/sub/controletemp\"; // Novo tópico de comando de temperatura\n\n// Função para enviar comandos no tópico de controle de temperatura\nfunction sendAction(action) {\n    const actionMsg = { action: action };\n    node.send({ payload: actionMsg, topic: actionTopicTemp });\n}\n\n// Armazena o estado da bomba ligada pelo controle de emergência\nlet bombaLigadaEmergencia = context.get(\"bombaLigadaEmergencia\") || false;\n\n// Processa mensagens de temperatura\nif (msg.topic === \"esp32/pub/temperatura\") {\n    const temperature = parseFloat(msg.payload);\n\n    // Verifica se a temperatura é válida\n    if (isNaN(temperature)) {\n        return null; // Se não for um número, não faz nada\n    }\n\n    // Armazena se a temperatura está alta\n    context.set(\"temperatureHigh\", temperature >= temperatureThreshold);\n\n    // Obtém o nível de líquido atual\n    const liquidLevel = context.get(\"liquidLevel\") || 0;\n\n    // Liga a bomba se a temperatura estiver alta e o nível de líquido for suficiente, e a bomba não estiver ligada pelo controle de emergência\n    if (context.get(\"temperatureHigh\") && liquidLevel >= liquidLevelThreshold && !bombaLigadaEmergencia) {\n        sendAction(\"ligar\"); // Envia comando de ligar no tópico de controle de temperatura\n        context.set(\"bombaLigadaEmergencia\", true); // Marca que a bomba foi ligada pelo controle de emergência\n    } \n    // Desliga a bomba se a temperatura caiu abaixo do limite e a bomba foi ligada pelo controle de emergência\n    else if (!context.get(\"temperatureHigh\") && bombaLigadaEmergencia) {\n        sendAction(\"desligar\"); // Envia comando de desligar no tópico de controle de temperatura\n        context.set(\"bombaLigadaEmergencia\", false); // Marca que a bomba foi desligada pelo controle de emergência\n    }\n\n} else if (msg.topic === \"esp32/pub/liquido\") {\n    const liquidLevel = parseInt(msg.payload, 10);\n\n    // Verifica se o nível de líquido é válido\n    if (isNaN(liquidLevel)) {\n        return null; // Se não for um número, não faz nada\n    }\n\n    // Armazena o nível de líquido atual\n    context.set(\"liquidLevel\", liquidLevel);\n\n    // Obtém o estado da temperatura\n    const temperatureHigh = context.get(\"temperatureHigh\");\n\n    // Liga a bomba se a temperatura estiver alta e o nível de líquido for suficiente, e a bomba não estiver ligada pelo controle de emergência\n    if (temperatureHigh && liquidLevel >= liquidLevelThreshold && !bombaLigadaEmergencia) {\n        sendAction(\"ligar\"); // Envia comando de ligar no tópico de controle de temperatura\n        context.set(\"bombaLigadaEmergencia\", true); // Marca que a bomba foi ligada pelo controle de emergência\n    } \n    // Desliga a bomba se o nível de líquido estiver abaixo do limite ou a temperatura estiver normalizada e a bomba foi ligada pelo controle de emergência\n    else if ((liquidLevel < liquidLevelThreshold || !temperatureHigh) && bombaLigadaEmergencia) {\n        sendAction(\"desligar\"); // Envia comando de desligar no tópico de controle de temperatura\n        context.set(\"bombaLigadaEmergencia\", false); // Marca que a bomba foi desligada pelo controle de emergência\n    }\n}\n\nreturn null; // Finaliza a função sem retorno\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1420,
+        "y": 380,
+        "wires": [
+            [
+                "64cf1ca8dfbad93b"
+            ]
+        ]
+    },
+    {
+        "id": "22fca324842165c0",
+        "type": "mysql",
+        "z": "c4888c3abb0f3966",
+        "mydb": "d91d72de81e54fac",
+        "name": "",
+        "x": 450,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e611f938681e4174",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "SystemMYSQL",
+        "func": "// Extrai os valores do payload\nvar freeHeap = msg.payload.freeHeap;\nvar flashSize = msg.payload.flashSize;\nvar flashFree = msg.payload.flashFree;\nvar internalTemp = msg.payload.internalTemp;\nvar uptimeHours = msg.payload.uptimeHours;\nvar uptimeMins = msg.payload.uptimeMins;\nvar uptimeSecs = msg.payload.uptimeSecs;\nvar ssid = msg.payload.ssid;\nvar ip = msg.payload.ip;\nvar rssi = msg.payload.rssi;\nvar wifiConnected = msg.payload.wifiConnected;\nvar cpuUsage = msg.payload.cpuUsage;\nvar timestamp = msg.payload.timestamp; // O timestamp deve estar no formato adequado\nvar location = \"ESP32\";\nvar sensor = \"SYSTEM\";\n\n// Cria um novo payload para a mensagem\nmsg.payload = {};\nmsg.payload.freeHeap = freeHeap;\nmsg.payload.flashSize = flashSize;\nmsg.payload.flashFree = flashFree;\nmsg.payload.internalTemp = internalTemp;\nmsg.payload.uptimeHours = uptimeHours;\nmsg.payload.uptimeMins = uptimeMins;\nmsg.payload.uptimeSecs = uptimeSecs;\nmsg.payload.ssid = ssid;\nmsg.payload.ip = ip;\nmsg.payload.rssi = rssi;\nmsg.payload.wifiConnected = wifiConnected;\nmsg.payload.cpuUsage = cpuUsage;\nmsg.payload.timestamp = timestamp; // Timestamp\nmsg.payload.location = location; // Localização\nmsg.payload.sensor = sensor; // Sensor\n\n// Define o tópico para a consulta SQL\nmsg.topic = \"INSERT INTO SystemData (id, freeHeap, flashSize, flashFree, internalTemp, uptimeHours, uptimeMins, uptimeSecs, ssid, ip, rssi, wifiConnected, cpuUsage, timestamp) VALUES (NULL, \" + freeHeap + \", \" + flashSize + \", \" + flashFree + \", \" + internalTemp + \", \" + uptimeHours + \", \" + uptimeMins + \", \" + uptimeSecs + \", '\" + ssid + \"', '\" + ip + \"', \" + rssi + \", \" + wifiConnected + \", \" + cpuUsage + \", '\" + timestamp + \"')\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 120,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4697298c18203060",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "FuctionSYSTEM",
+        "func": "// Extrair informações do payload\nconst {\n    freeHeap,\n    flashSize,\n    flashFree,\n    internalTemp,\n    uptimeHours,\n    uptimeMins,\n    uptimeSecs,\n    ssid,\n    ip,\n    rssi,\n    wifiConnected,\n    cpuUsage\n} = msg.payload;\n\n// Calcular a memória utilizada\nconst memoryUsed = flashSize - flashFree;\n\n// Considerando o clock da CPU do ESP32 como 240 MHz\nconst cpuClockMHz = 240;\nconst cpuUsageMHz = (cpuUsage / 100) * cpuClockMHz; // Uso da CPU em MHz\n\n// Calcular o uptime total em segundos (armazenar este valor no InfluxDB)\nconst uptimeTotalSeconds = (uptimeHours * 3600) + (uptimeMins * 60) + uptimeSecs;\n\n// Montar o novo payload com os resultados\nmsg.payload = {\n    freeHeap,\n    flashSize,\n    flashFree,\n    internalTemp,\n    memoryflash: flashSize, // Valor total de memória flash\n    memoryutilizada: memoryUsed,\n    ssid,\n    ip,\n    rssi,\n    wifiConnected,\n    cpuUsagePercentage: cpuUsage, // Uso da CPU em porcentagem\n    cpuUsageMHz: cpuUsageMHz.toFixed(2), // Uso da CPU em MHz com duas casas decimais\n    uptime: uptimeTotalSeconds // Uptime total em segundos (numérico)\n};\n\n// Retornar a mensagem com o novo payload\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 180,
+        "wires": [
+            [
+                "af71185ef4957e6b"
+            ]
+        ]
+    },
+    {
+        "id": "82c9b1bfd170788f",
+        "type": "influxdb out",
+        "z": "c4888c3abb0f3966",
+        "influxdb": "51989b25f8b9fcec",
+        "name": "",
+        "measurement": "LiquidoOriginal",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "servertcc",
+        "bucket": "MICHELDIEGOTCC",
+        "x": 1350,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "2561524ca7d29282",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "function 2",
+        "func": "// Verifica se o payload contém a propriedade 'liquidLevel'\nif (msg.payload.liquidLevel !== undefined) {\n    // Retorna apenas o valor do liquidLevel\n    return { payload: msg.payload.liquidLevel };\n} else {\n    // Se o valor não estiver disponível, retorna null\n    return null;\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 40,
+        "wires": [
+            [
+                "82c9b1bfd170788f"
+            ]
+        ]
+    },
+    {
+        "id": "4636131f213332fc",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "fullSystemMetrics",
+        "func": "// Extrair informações do payload\nconst {\n    freeHeap,\n    flashSize,\n    flashFree,\n    internalTemp,\n    uptimeHours,\n    uptimeMins,\n    uptimeSecs,\n    ssid,\n    ip,\n    rssi,\n    wifiConnected,\n    cpuUsage\n} = msg.payload;\n\n// Calcular a memória utilizada\nconst memoryUsed = flashSize - flashFree;\n\n// Considerando o clock da CPU do ESP32 como 240 MHz\nconst cpuClockMHz = 240;\nconst cpuUsageMHz = (cpuUsage / 100) * cpuClockMHz; // Uso da CPU em MHz\n\n// Calcular o uptime total em segundos\nconst uptimeTotalSeconds = (uptimeHours * 3600) + (uptimeMins * 60) + uptimeSecs;\n\n// Calcular horas, minutos e segundos a partir do uptime total\nconst uptimeFormattedHours = Math.floor(uptimeTotalSeconds / 3600);\nconst uptimeFormattedMinutes = Math.floor((uptimeTotalSeconds % 3600) / 60);\nconst uptimeFormattedSeconds = uptimeTotalSeconds % 60;\n\n// Montar o novo payload com os resultados\nmsg.payload = {\n    freeHeap,\n    flashSize,\n    flashFree,\n    internalTemp,\n    memoryflash: flashSize, // Valor total de memória flash\n    memoryutilizada: memoryUsed,\n    ssid,\n    ip,\n    rssi,\n    wifiConnected,\n    cpuUsagePercentage: cpuUsage, // Uso da CPU em porcentagem\n    cpuUsageMHz: cpuUsageMHz.toFixed(2), // Uso da CPU em MHz com duas casas decimais\n    uptime: `${uptimeFormattedHours.toString().padStart(2, '0')}:${uptimeFormattedMinutes.toString().padStart(2, '0')}:${uptimeFormattedSeconds.toString().padStart(2, '0')}`\n};\n\n// Retornar a mensagem com o novo payload\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 500,
+        "wires": [
+            [
+                "ba4b8f568b359947",
+                "5dcc1365fe8c7179",
+                "f157e379169cc3b0",
+                "a35e25951f84eb23",
+                "d08f20666a78ca68",
+                "cfabc10fda71aea2",
+                "86b6d226d9ff1a8c"
+            ]
+        ]
+    },
+    {
+        "id": "86b6d226d9ff1a8c",
+        "type": "function",
+        "z": "c4888c3abb0f3966",
+        "name": "SystemSQL",
+        "func": "// Extrai os valores do payload\nvar freeHeap = msg.payload.freeHeap;\nvar flashSize = msg.payload.flashSize;\nvar flashFree = msg.payload.flashFree;\nvar internalTemp = msg.payload.internalTemp;\nvar memoryflash = msg.payload.memoryflash;\nvar memoryutilizada = msg.payload.memoryutilizada;\nvar ssid = msg.payload.ssid;\nvar ip = msg.payload.ip;\nvar rssi = msg.payload.rssi;\nvar wifiConnected = msg.payload.wifiConnected;\nvar cpuUsagePercentage = msg.payload.cpuUsagePercentage;\nvar cpuUsageMHz = msg.payload.cpuUsageMHz;\nvar uptime = msg.payload.uptime;\n\n// Define o tópico para a consulta SQL\nmsg.topic = \"INSERT INTO SystemInfo (id, freeHeap, flashSize, flashFree, internalTemp, memoryflash, memoryutilizada, ssid, ip, rssi, wifiConnected, cpuUsagePercentage, cpuUsageMHz, uptime) \" +\n            \"VALUES (NULL, \" + freeHeap + \", \" + flashSize + \", \" + flashFree + \", \" + internalTemp + \", \" + memoryflash + \", \" + memoryutilizada + \", '\" + ssid + \"', '\" + ip + \"', \" + rssi + \", \" + wifiConnected + \", \" + cpuUsagePercentage + \", \" + cpuUsageMHz + \", '\" + uptime + \"')\";\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 170,
+        "y": 560,
+        "wires": [
+            [
+                "90f825879a1a6e6e"
+            ]
+        ]
+    },
+    {
+        "id": "90f825879a1a6e6e",
+        "type": "mysql",
+        "z": "c4888c3abb0f3966",
+        "mydb": "d91d72de81e54fac",
+        "name": "",
+        "x": 330,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cb076eb757978909",
+        "type": "debug",
+        "z": "c4888c3abb0f3966",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1420,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "8e789dd707b5e26a",
+        "type": "debug",
+        "z": "c4888c3abb0f3966",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 300,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "570c796b2cf45015",
+        "type": "mqtt-broker",
+        "name": " ",
+        "broker": "192.168.1.9",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0f6f3fb31dfd6dba",
+        "type": "ui-group",
+        "name": "Liquido",
+        "page": "b1d258121f153c5d",
+        "width": "7",
+        "height": "1",
+        "order": 3,
+        "showTitle": false,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "e4b9d56318351c17",
+        "type": "ui-group",
+        "name": "Tempertatura",
+        "page": "b1d258121f153c5d",
+        "width": "3",
+        "height": "1",
+        "order": 2,
+        "showTitle": false,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "8fe4aea5f346c87d",
+        "type": "ui-group",
+        "name": "LEDS",
+        "page": "b1d258121f153c5d",
+        "width": "2",
+        "height": "1",
+        "order": 4,
+        "showTitle": false,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "422ff5886a9c486c",
+        "type": "ui-group",
+        "name": "System",
+        "page": "b1d258121f153c5d",
+        "width": "14",
+        "height": "1",
+        "order": 1,
+        "showTitle": false,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "51989b25f8b9fcec",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "Influxdata",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "timeout": "10",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "d91d72de81e54fac",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "ESP32DATA",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "b1d258121f153c5d",
+        "type": "ui-page",
+        "name": "TCC",
+        "ui": "f0508c120dae33cf",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "1e5513c968c80646",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "f0508c120dae33cf",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "showPageTitle": true,
+        "navigationStyle": "temporary",
+        "titleBarStyle": "default"
+    },
+    {
+        "id": "1e5513c968c80646",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    }
+]
